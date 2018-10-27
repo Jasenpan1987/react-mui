@@ -1,7 +1,7 @@
 import React from "react";
 import { Tab, Paper, Tabs } from "@material-ui/core";
 
-const Footer = () => (
+const Footer = ({ muscles }) => (
   <footer>
     <Paper>
       <Tabs
@@ -11,9 +11,10 @@ const Footer = () => (
         textColor="primary"
         centered
       >
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
+        <Tab label="All" />
+        {muscles.map(muscle => (
+          <Tab key={muscle} label={muscle} />
+        ))}
       </Tabs>
     </Paper>
   </footer>

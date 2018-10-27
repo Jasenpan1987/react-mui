@@ -7,16 +7,19 @@ const styles = {
   Paper: {
     padding: 20,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    height: 500,
+    overflowY: "auto"
   }
 };
 
 class Exercise extends Component {
   render() {
+    const { exercises } = this.props;
     return (
       <Grid container spacing={24}>
         <Grid item sm>
-          <LeftPane styles={styles} />
+          <LeftPane styles={styles} exercises={exercises} />
         </Grid>
 
         <Grid item sm>
