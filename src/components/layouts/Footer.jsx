@@ -1,17 +1,18 @@
 import React from "react";
 import { Tab, Paper, Tabs } from "@material-ui/core";
 
-const Footer = ({ muscles }) => (
+const Footer = ({ muscles, handleMuscleSelect, selectedMuscle }) => (
   <footer>
     <Paper>
       <Tabs
-        value={0}
-        // onChange={this.handleChange}
+        value={muscles.indexOf(selectedMuscle)}
+        onChange={(e, index) => {
+          handleMuscleSelect(muscles[index || 0]);
+        }}
         indicatorColor="primary"
         textColor="primary"
         centered
       >
-        <Tab label="All" />
         {muscles.map(muscle => (
           <Tab key={muscle} label={muscle} />
         ))}

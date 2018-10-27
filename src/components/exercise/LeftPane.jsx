@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 
 const LeftPane = props => {
-  const { styles, exercises } = props;
+  const { styles, exercises, handlExerciseSelect } = props;
   return (
     <Paper style={styles.Paper}>
       {Object.keys(exercises).map(muscle => {
@@ -16,10 +16,21 @@ const LeftPane = props => {
         console.log("exercisesByMuscle:: ", muscle, exercisesByMuscle);
         return (
           <React.Fragment key={muscle}>
-            <Typography variant="headline">{muscle}</Typography>
+            <Typography
+              variant="headline"
+              style={{ textTransform: "capitalize" }}
+            >
+              {muscle}
+            </Typography>
             <List component="nav">
               {exercisesByMuscle.map(ex => (
-                <ListItem button key={ex.id}>
+                <ListItem
+                  button
+                  key={ex.id}
+                  onClick={() => {
+                    handlExerciseSelect(ex.id);
+                  }}
+                >
                   <ListItemText primary={ex.title} />
                 </ListItem>
               ))}
