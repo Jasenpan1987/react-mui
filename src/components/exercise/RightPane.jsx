@@ -1,14 +1,13 @@
 import React from "react";
 import { Paper, Typography } from "@material-ui/core";
-import { exercises } from "../../store";
 
 const RightPane = props => {
-  const { styles, selectedExerciseId } = props;
-
+  const { styles, selectedExerciseId, exercises } = props;
   if (selectedExerciseId !== undefined) {
     const { title, description } = exercises.find(
       ex => ex.id === selectedExerciseId
     );
+
     return (
       <Paper style={styles.Paper}>
         <Typography variant="display1">{title}</Typography>

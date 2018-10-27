@@ -14,20 +14,50 @@ const styles = {
 };
 
 class Exercise extends Component {
+  transformExercisesByMuscle = exercises => {
+    return exercises.reduce((exerciseByMuscles, currentExercise) => {
+      const { muscles } = currentExercise;
+
+      exerciseByMuscles[muscles] = exerciseByMuscles[muscles]
+        ? [...exerciseByMuscles[muscles], currentExercise]
+        : [currentExercise];
+
+      return exerciseByMuscles;
+    }, {});
+  };
+
+  filterExerciseBySelectedMuscle = (selectedMuscle, exercises) => {
+    if (selectedMuscle === "All") {
+      return exercises;
+    }
+    return exercises.filter(exercise => exercise.muscles === selectedMuscle);
+  };
+
   render() {
-    const { exercises, handlExerciseSelect, selectedExerciseId } = this.props;
+    const {
+      exercises,
+      handleExerciseSelect,
+      selectedExerciseId,
+      selectedMuscle
+    } = this.props;
     return (
       <Grid container spacing={24}>
         <Grid item sm>
           <LeftPane
             styles={styles}
-            exercises={exercises}
-            handlExerciseSelect={handlExerciseSelect}
+            handleExerciseSelect={handleExerciseSelect}
+            exercises={this.transformExercisesByMuscle(
+              this.filterExerciseBySelectedMuscle(selectedMuscle, exercises)
+            )}
           />
         </Grid>
 
         <Grid item sm>
-          <RightPane styles={styles} selectedExerciseId={selectedExerciseId} />
+          <RightPane
+            styles={styles}
+            selectedExerciseId={selectedExerciseId}
+            exercises={exercises}
+          />
         </Grid>
       </Grid>
     );

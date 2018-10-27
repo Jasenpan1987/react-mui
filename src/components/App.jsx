@@ -1,35 +1,15 @@
 import React, { Component } from "react";
-import { Header, Footer } from "./layouts";
-import { Exercise } from "./exercise";
+import { Header } from "./layouts/Header";
+import { Footer } from "./layouts/Footer";
 import { muscles, exercises } from "../store";
+import { Exercise } from "./exercise/Exercise";
 
 class App extends Component {
   state = {
     exercises,
+    muscles,
     selectedMuscle: "All",
     selectedExerciseId: undefined
-  };
-
-  getExercisesByMuscles = exercises => {
-    return exercises.reduce((exerciseByMuscles, currentExercise) => {
-      const { muscles } = currentExercise;
-
-      exerciseByMuscles[muscles] = exerciseByMuscles[muscles]
-        ? [...exerciseByMuscles[muscles], currentExercise]
-        : [currentExercise];
-
-      return exerciseByMuscles;
-    }, {});
-  };
-
-  filterExercisesByMuscles = exercises => {
-    if (this.state.selectedMuscle === "All") {
-      return exercises;
-    }
-
-    return exercises.filter(
-      exercise => exercise.muscles === this.state.selectedMuscle
-    );
   };
 
   handleMuscleSelect = selectedMuscle => {
@@ -39,26 +19,40 @@ class App extends Component {
     }));
   };
 
-  handlExerciseSelect = selectedExerciseId => {
+  handleExerciseSelect = selectedExerciseId => {
     this.setState(prevState => ({
       ...prevState,
       selectedExerciseId
     }));
   };
 
+  onCreateExercise = exercise => {
+    this.setState(prevState => ({
+      ...prevState,
+      exercises: [
+        ...prevState.exercises,
+        {
+          ...exercise,
+          id: exercise.title
+        }
+      ]
+    }));
+  };
+
   render() {
     const {
-      state: { exercises },
-      getExercisesByMuscles,
-      filterExercisesByMuscles
+      state: { exercises }
     } = this;
+
     return (
       <React.Fragment>
-        <Header />
+        <Header onCreateExercise={this.onCreateExercise} />
         <Exercise
-          exercises={getExercisesByMuscles(filterExercisesByMuscles(exercises))}
+          exercises={exercises}
+          selectedMuscle={this.state.selectedMuscle}
           selectedExerciseId={this.state.selectedExerciseId}
-          handlExerciseSelect={this.handlExerciseSelect}
+          handleExerciseSelect={this.handleExerciseSelect}
+          muscles={["All", ...muscles]}
         />
         <Footer
           muscles={["All", ...muscles]}
